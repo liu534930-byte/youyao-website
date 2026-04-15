@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>有妖互娱（南京）科技有限公司</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #03071e;
+      --navy-2:     #080f2a;
+      --navy-3:     #0d1a40;
+      --blue:       #1353d9;
+      --blue-light: #2e6af6;
+      --gold:       #c9a84c;
+      --gold-light: #e8c96b;
+      --white:      #ffffff;
+      --gray-1:     #f0f4ff;
+      --gray-2:     #b8c4e0;
+      --gray-3:     #6b7a99;
+      --border:     rgba(255,255,255,0.07);
+      --glass:      rgba(255,255,255,0.04);
+      --shadow:     0 24px 80px rgba(0,0,0,0.55);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', 'Inter', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-2); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+    /* ─── NOISE TEXTURE ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 72px;
+      background: rgba(3,7,30,0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.6); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--gold) 100%);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo-text {
+      font-size: 15px; font-weight: 700;
+      color: var(--white); letter-spacing: 0.02em;
+    }
+    .nav-logo-text span { color: var(--gold); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none; color: var(--gray-2);
+      font-size: 14px; font-weight: 500; letter-spacing: 0.03em;
+      transition: color .2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--gold);
+      transform: scaleX(0); transition: transform .25s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      padding: 9px 22px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+      color: #fff !important;
+      border-radius: 6px; font-size: 13px !important;
+      font-weight: 600 !important; letter-spacing: 0.04em !important;
+      transition: opacity .2s, transform .2s !important;
+    }
+    .nav-cta:hover { opacity: .88; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* grid lines */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    /* glow orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 600px; height: 600px;
+      background: var(--blue);
+      top: -100px; left: -200px;
+      animation: drift 14s ease-in-out infinite;
+    }
+    .hero-orb-2 {
+      width: 500px; height: 500px;
+      background: var(--gold);
+      bottom: -80px; right: -150px;
+      animation: drift 18s ease-in-out infinite reverse;
+    }
+    .hero-orb-3 {
+      width: 350px; height: 350px;
+      background: #5b21b6;
+      top: 40%; left: 55%;
+      animation: drift 22s ease-in-out infinite 3s;
+    }
+
+    @keyframes drift {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(40px,-30px) scale(1.06); }
+      66%      { transform: translate(-20px,20px) scale(0.96); }
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 100px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+      color: var(--gold-light);
+      background: rgba(201,168,76,0.07);
+      margin-bottom: 32px;
+      position: relative; z-index: 1;
+      text-transform: uppercase;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold-light);
+      box-shadow: 0 0 8px var(--gold-light);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      position: relative; z-index: 1;
+    }
+    .hero h1 .line-1 { display: block; color: var(--white); }
+    .hero h1 .line-2 {
+      display: block;
+      background: linear-gradient(90deg, var(--blue-light) 0%, var(--gold-light) 60%, var(--blue-light) 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
+
+    .hero-sub {
+      font-size: 1.1rem; font-weight: 300; color: var(--gray-2);
+      max-width: 560px; margin: 0 auto 48px;
+      line-height: 1.8; position: relative; z-index: 1;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      position: relative; z-index: 1;
+    }
+    .btn-primary {
+      padding: 15px 36px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+      color: #fff; border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 600; letter-spacing: 0.03em;
+      cursor: pointer; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 8px 32px rgba(19,83,217,0.45);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(19,83,217,0.6); }
+
+    .btn-ghost {
+      padding: 14px 34px;
+      background: transparent;
+      color: var(--gray-1); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 15px; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+      backdrop-filter: blur(8px);
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); color: #fff; }
+
+    .hero-stats {
+      display: flex; gap: 64px; margin-top: 80px;
+      position: relative; z-index: 1;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--white) 0%, var(--gray-2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -0.02em;
+    }
+    .stat-num span { color: var(--gold-light); -webkit-text-fill-color: var(--gold-light); }
+    .stat-label { font-size: 12px; color: var(--gray-3); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+
+    /* ─── SECTION ─── */
+    section { padding: 100px 5%; position: relative; }
+    .section-label {
+      display: inline-block;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1rem; color: var(--gray-2);
+      max-width: 520px; line-height: 1.8;
+    }
+    .section-header { margin-bottom: 64px; }
+
+    /* ─── DIVIDER LINE ─── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      margin: 0 5%;
+    }
+
+    /* ─── SERVICES ─── */
+    #services { background: var(--navy-2); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .service-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: background .3s, border-color .3s, transform .3s;
+      cursor: default;
+    }
+    .service-card:hover {
+      background: rgba(19,83,217,0.06);
+      border-color: rgba(19,83,217,0.3);
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue-light), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, rgba(19,83,217,0.2) 0%, rgba(201,168,76,0.12) 100%);
+      border: 1px solid rgba(19,83,217,0.25);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 24px;
+    }
+    .service-card h3 {
+      font-size: 1.05rem; font-weight: 600; color: var(--white);
+      margin-bottom: 12px; letter-spacing: 0.01em;
+    }
+    .service-card p {
+      font-size: 0.875rem; color: var(--gray-3); line-height: 1.8;
+      font-weight: 300;
+    }
+    .service-num {
+      position: absolute; top: 28px; right: 28px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.12);
+    }
+
+    /* ─── CLIENTS ─── */
+    #clients { background: var(--navy); }
+    .clients-logos {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 2px;
+      margin-bottom: 80px;
+    }
+    .client-logo {
+      border: 1px solid var(--border);
+      background: var(--glass);
+      display: flex; align-items: center; justify-content: center;
+      padding: 32px 24px;
+      font-weight: 600; font-size: 14px; color: var(--gray-3);
+      letter-spacing: 0.05em;
+      transition: color .25s, background .25s, border-color .25s;
+    }
+    .client-logo:hover {
+      color: var(--white); background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    /* timeline */
+    .timeline { position: relative; padding-left: 40px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px;
+      width: 1px; background: linear-gradient(to bottom, var(--blue), var(--gold), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-dot {
+      position: absolute; left: -36px; top: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--navy-2);
+      border: 2px solid var(--blue-light);
+      box-shadow: 0 0 12px rgba(46,106,246,0.5);
+    }
+    .timeline-year {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--blue-light); margin-bottom: 6px; text-transform: uppercase;
+    }
+    .timeline-title { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .timeline-desc { font-size: 0.875rem; color: var(--gray-3); line-height: 1.7; font-weight: 300; }
+
+    /* ─── CERTIFICATIONS ─── */
+    #certs { background: var(--navy-2); }
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .cert-card {
+      border: 1px solid var(--border);
+      background: var(--glass);
+      padding: 36px 28px;
+      text-align: center;
+      transition: background .3s, border-color .3s;
+    }
+    .cert-card:hover {
+      background: rgba(201,168,76,0.05);
+      border-color: rgba(201,168,76,0.25);
+    }
+    .cert-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, rgba(19,83,217,0.12) 100%);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 20px;
+    }
+    .cert-card h4 {
+      font-size: 0.9rem; font-weight: 600; color: var(--white);
+      margin-bottom: 8px; letter-spacing: 0.02em;
+    }
+    .cert-card p { font-size: 0.78rem; color: var(--gray-3); line-height: 1.7; }
+
+    /* ─── TEAM / ABOUT ─── */
+    #about { background: var(--navy); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .metric-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 24px;
+      transition: border-color .3s;
+    }
+    .metric-card:hover { border-color: rgba(19,83,217,0.35); }
+    .metric-val {
+      font-size: 2rem; font-weight: 800; letter-spacing: -0.03em;
+      white-space: nowrap;
+      background: linear-gradient(135deg, var(--blue-light), var(--gold-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .metric-info-label { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+    .metric-info-sub { font-size: 0.78rem; color: var(--gray-3); margin-top: 2px; }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--navy-2); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+    .contact-info h3 { font-size: 1.4rem; font-weight: 600; color: var(--white); margin-bottom: 24px; }
+    .contact-item {
+      display: flex; gap: 16px; margin-bottom: 28px; align-items: flex-start;
+    }
+    .contact-item-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(19,83,217,0.12); border: 1px solid rgba(19,83,217,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .contact-item-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--gray-3); text-transform: uppercase; margin-bottom: 4px; }
+    .contact-item-val { font-size: 0.9rem; color: var(--white); font-weight: 400; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; color: var(--gray-3); text-transform: uppercase; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      color: var(--white); font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--blue-light);
+      background: rgba(19,83,217,0.06);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select option { background: var(--navy-2); }
+    .form-submit {
+      padding: 16px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+      color: #fff; border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 600; letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: opacity .2s, transform .2s;
+      box-shadow: 0 8px 32px rgba(19,83,217,0.4);
+      margin-top: 8px;
+    }
+    .form-submit:hover { opacity: .88; transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      padding: 48px 5% 32px;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 40px; margin-bottom: 48px;
+    }
+    .footer-brand { max-width: 300px; }
+    .footer-logo {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
+    }
+    .footer-logo-mark {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--gold) 100%);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 12px; color: #fff;
+    }
+    .footer-logo-text { font-size: 14px; font-weight: 700; color: var(--white); }
+    .footer-logo-text span { color: var(--gold); }
+    .footer-brand p { font-size: 13px; color: var(--gray-3); line-height: 1.8; }
+    .footer-links h5 {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--gray-3); text-transform: uppercase; margin-bottom: 20px;
+    }
+    .footer-links ul { list-style: none; }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a {
+      text-decoration: none; color: var(--gray-2);
+      font-size: 13px; font-weight: 400;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px; border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--gray-3);
+    }
+    .footer-bottom a { color: var(--gray-3); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--white); }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* stagger children */
+    .stagger > * { transition-delay: calc(var(--i, 0) * 80ms); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .clients-logos { grid-template-columns: repeat(3, 1fr); }
+      .certs-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-stats { gap: 32px; flex-wrap: wrap; justify-content: center; }
+      .services-grid { grid-template-columns: 1fr; }
+      .clients-logos { grid-template-columns: repeat(2, 1fr); }
+      .certs-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { flex-direction: column; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ─── UTILITY ─── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .text-gold { color: var(--gold-light); }
+    .highlight-bar {
+      display: inline-block;
+      width: 32px; height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--gold));
+      border-radius: 1px; vertical-align: middle; margin-right: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">有妖</div>
+    <div class="nav-logo-text">有妖互娱<span>·</span>科技</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">核心服务</a></li>
+    <li><a href="#clients">服务客户</a></li>
+    <li><a href="#certs">资质荣誉</a></li>
+    <li><a href="#about">关于我们</a></li>
+    <li><a href="#contact" class="nav-cta">联系我们</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    高新技术企业认证 · 国家双软认证
+  </div>
+
+  <h1>
+    <span class="line-1">创新驱动科技</span>
+    <span class="line-2">技术赋能产业</span>
+  </h1>
+
+  <p class="hero-sub">
+    有妖互娱（南京）科技有限公司，专注聚合支付、数字化经营与金融科技，
+    为企业提供全链路数字解决方案。
+  </p>
+
+  <div class="hero-actions">
+    <a href="#services" class="btn-primary">探索核心服务</a>
+    <a href="#contact" class="btn-ghost">立即咨询</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">8<span>+</span></div>
+      <div class="stat-label">年行业经验</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">500<span>+</span></div>
+      <div class="stat-label">合作客户</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">82<span>%</span></div>
+      <div class="stat-label">本科以上人员</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50<span>%</span></div>
+      <div class="stat-label">软件技术人员</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header fade-up">
+    <div class="section-label">Core Services</div>
+    <h2 class="section-title">核心服务能力</h2>
+    <p class="section-sub">依托深厚的技术积累，为各行业客户提供端到端的数字化转型解决方案</p>
+  </div>
+
+  <div class="services-grid stagger">
+    <div class="service-card fade-up" style="--i:0">
+      <span class="service-num">01</span>
+      <div class="service-icon">💳</div>
+      <h3>聚合支付系统</h3>
+      <p>整合微信支付、支付宝等主流支付渠道，提供一站式收银解决方案，帮助商户提升收款效率与资金安全性。</p>
+    </div>
+    <div class="service-card fade-up" style="--i:1">
+      <span class="service-num">02</span>
+      <div class="service-icon">📱</div>
+      <h3>APP与小程序开发</h3>
+      <p>从需求分析到上线运营，提供原生 App、微信/支付宝小程序全栈开发，助力品牌构建线上流量入口。</p>
+    </div>
+    <div class="service-card fade-up" style="--i:2">
+      <span class="service-num">03</span>
+      <div class="service-icon">🏪</div>
+      <h3>商户数字化经营</h3>
+      <p>整合营销工具、会员管理与数据看板，为线下商户提供完整的数字化运营体系，提升客户粘性与复购率。</p>
+    </div>
+    <div class="service-card fade-up" style="--i:3">
+      <span class="service-num">04</span>
+      <div class="service-icon">📊</div>
+      <h3>金融获客服务</h3>
+      <p>依托精准的用户画像与AI算法，为金融机构提供获客与风控支持，提升贷款、保险等金融产品的转化效率。</p>
+    </div>
+    <div class="service-card fade-up" style="--i:4">
+      <span class="service-num">05</span>
+      <div class="service-icon">🔬</div>
+      <h3>平台数据优化</h3>
+      <p>通过大数据分析与用户行为追踪，持续优化平台产品的留存与变现指标，驱动数据驱动的增长决策。</p>
+    </div>
+    <div class="service-card fade-up" style="--i:5">
+      <span class="service-num">06</span>
+      <div class="service-icon">⚙️</div>
+      <h3>软件定制开发</h3>
+      <p>承接企业级定制化软件项目，覆盖ERP、CRM、供应链管理等核心业务系统，交付稳定可扩展的技术架构。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="two-col">
+    <div class="section-header fade-up" style="margin-bottom: 0;">
+      <div class="section-label">Our Clients</div>
+      <h2 class="section-title">服务客户</h2>
+      <p class="section-sub">我们已为金融、零售、电商等多个行业的头部企业提供长期数字化服务支持。</p>
+    </div>
+    <div class="timeline fade-up">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2016</div>
+        <div class="timeline-title">公司成立，深耕移动支付赛道</div>
+        <div class="timeline-desc">聚焦聚合支付产品研发，完成首批商户接入，建立技术团队核心骨干。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2018</div>
+        <div class="timeline-title">获得高新技术企业认证</div>
+        <div class="timeline-desc">研发投入持续加大，获评国家高新技术企业，并通过双软资质认证。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2020</div>
+        <div class="timeline-title">服务客户突破300家</div>
+        <div class="timeline-desc">战略客户覆盖苏宁易购、星图金融等知名企业，业务版图扩展至华东全区。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2024</div>
+        <div class="timeline-title">全面迈入金融科技新阶段</div>
+        <div class="timeline-desc">AI赋能获客与风控，推出新一代数字化经营平台，服务500+合作伙伴。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clients-logos" style="margin-top: 80px;">
+    <div class="client-logo">苏宁易购</div>
+    <div class="client-logo">星图金融</div>
+    <div class="client-logo">中国银联</div>
+    <div class="client-logo">招商银行</div>
+    <div class="client-logo">京东金融</div>
+    <div class="client-logo">陆金所</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="section-header fade-up" style="text-align: center;">
+    <div class="section-label">Certifications</div>
+    <h2 class="section-title">资质荣誉</h2>
+    <p class="section-sub" style="margin: 0 auto;">国家权威机构认证背书，彰显我们在技术研发与行业规范方面的持续承诺</p>
+  </div>
+
+  <div class="certs-grid stagger">
+    <div class="cert-card fade-up" style="--i:0">
+      <div class="cert-icon">🏆</div>
+      <h4>高新技术企业</h4>
+      <p>国家科技部认定，彰显自主创新技术实力</p>
+    </div>
+    <div class="cert-card fade-up" style="--i:1">
+      <div class="cert-icon">🛡️</div>
+      <h4>支付宝优质服务商</h4>
+      <p>蚂蚁集团授权认证，专业聚合支付服务商</p>
+    </div>
+    <div class="cert-card fade-up" style="--i:2">
+      <div class="cert-icon">📜</div>
+      <h4>软件企业认证</h4>
+      <p>工业和信息化部认定，国家双软资质企业</p>
+    </div>
+    <div class="cert-card fade-up" style="--i:3">
+      <div class="cert-icon">🔒</div>
+      <h4>ISO 27001 信息安全</h4>
+      <p>国际信息安全管理体系认证，数据安全合规</p>
+    </div>
+    <div class="cert-card fade-up" style="--i:4">
+      <div class="cert-icon">⚡</div>
+      <h4>微信支付服务商</h4>
+      <p>腾讯微信支付官方授权服务商资质</p>
+    </div>
+    <div class="cert-card fade-up" style="--i:5">
+      <div class="cert-icon">🌐</div>
+      <h4>互联网增值电信业务</h4>
+      <p>工信部颁发ICP许可证，合规经营资质</p>
+    </div>
+    <div class="cert-card fade-up" style="--i:6">
+      <div class="cert-icon">📊</div>
+      <h4>国家级科技型中小企业</h4>
+      <p>入选国家科技型中小企业培育名录</p>
+    </div>
+    <div class="cert-card fade-up" style="--i:7">
+      <div class="cert-icon">🎖️</div>
+      <h4>江苏省软件百强企业</h4>
+      <p>连续入选江苏省软件和信息技术服务业百强</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="fade-up">
+      <div class="section-label">About Us</div>
+      <h2 class="section-title">关于我们</h2>
+      <p style="color: var(--gray-2); font-size: 0.95rem; line-height: 1.9; margin-bottom: 24px; font-weight: 300;">
+        有妖互娱（南京）科技有限公司成立于2016年，总部位于南京，是一家专注于移动支付、数字化经营及金融科技的科技型企业。
+      </p>
+      <p style="color: var(--gray-3); font-size: 0.875rem; line-height: 1.9; font-weight: 300;">
+        我们拥有一支由资深技术专家与行业顾问组成的精英团队，致力于以前沿技术推动行业数字化升级，为合作伙伴创造持续的商业价值。
+      </p>
+    </div>
+    <div class="about-visual fade-up">
+      <div class="metric-card">
+        <div class="metric-val">82%</div>
+        <div>
+          <div class="metric-info-label">本科以上学历</div>
+          <div class="metric-info-sub">高学历团队保障技术研发质量</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">50%</div>
+        <div>
+          <div class="metric-info-label">软件技术人员</div>
+          <div class="metric-info-sub">核心工程师团队驱动产品创新</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">500<span style="font-size:1.2rem;color:var(--gray-2)">+</span></div>
+        <div>
+          <div class="metric-info-label">累计服务企业</div>
+          <div class="metric-info-sub">覆盖金融、零售、电商等多行业</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="fade-up">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">联系我们</h2>
+      <p style="color:var(--gray-2);font-size:0.9rem;line-height:1.8;margin-bottom:40px;font-weight:300;">
+        如您有合作需求或产品咨询，我们的专业顾问将在24小时内与您取得联系。
+      </p>
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div>
+          <div class="contact-item-label">公司地址</div>
+          <div class="contact-item-val">江苏省南京市</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div>
+          <div class="contact-item-label">商务热线</div>
+          <div class="contact-item-val">400-XXX-XXXX</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">✉️</div>
+        <div>
+          <div class="contact-item-label">电子邮箱</div>
+          <div class="contact-item-val">business@youyao-tech.com</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>姓名</label>
+            <input type="text" placeholder="您的姓名" required />
+          </div>
+          <div class="form-group">
+            <label>联系电话</label>
+            <input type="tel" placeholder="手机号码" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>需求类型</label>
+          <select>
+            <option value="">请选择您的需求</option>
+            <option>聚合支付系统</option>
+            <option>APP与小程序开发</option>
+            <option>商户数字化经营</option>
+            <option>金融获客服务</option>
+            <option>平台数据优化</option>
+            <option>软件定制开发</option>
+            <option>其他咨询</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>需求描述</label>
+          <textarea placeholder="请简要描述您的业务需求，我们将为您量身制定解决方案…"></textarea>
+        </div>
+        <button type="submit" class="form-submit">提交需求 →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-logo-mark">有妖</div>
+        <div class="footer-logo-text">有妖互娱<span>·</span>科技</div>
+      </div>
+      <p>有妖互娱（南京）科技有限公司，专注数字化与金融科技，以技术驱动行业创新，助力企业持续增长。</p>
+    </div>
+    <div class="footer-links">
+      <h5>产品服务</h5>
+      <ul>
+        <li><a href="#services">聚合支付</a></li>
+        <li><a href="#services">APP开发</a></li>
+        <li><a href="#services">数字化经营</a></li>
+        <li><a href="#services">金融获客</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h5>公司信息</h5>
+      <ul>
+        <li><a href="#about">关于我们</a></li>
+        <li><a href="#certs">资质荣誉</a></li>
+        <li><a href="#clients">服务客户</a></li>
+        <li><a href="#contact">联系我们</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h5>合规信息</h5>
+      <ul>
+        <li><a href="#">隐私政策</a></li>
+        <li><a href="#">服务协议</a></li>
+        <li><a href="#">安全中心</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 有妖互娱（南京）科技有限公司 · 保留所有权利</span>
+    <span><a href="#">苏ICP备XXXXXXXX号</a></span>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach((el, i) => {
+    observer.observe(el);
+  });
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✓ 提交成功，我们将尽快联系您';
+    btn.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
+    btn.style.boxShadow = '0 8px 32px rgba(5,150,105,0.4)';
+    btn.disabled = true;
+  }
+</script>
+</body>
+</html>
