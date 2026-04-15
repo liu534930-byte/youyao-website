@@ -37,67 +37,55 @@
       overflow-x: hidden;
     }
 
+    /* ─── SCROLL PROGRESS ─── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--gold));
+      transition: width .1s linear;
+    }
+
     /* ─── SCROLLBAR ─── */
-    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--navy-2); }
-    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(var(--blue), var(--gold)); border-radius: 3px; }
 
     /* ─── NOISE TEXTURE ─── */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.35;
+      pointer-events: none; z-index: 0; opacity: 0.3;
     }
 
     /* ─── NAV ─── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      height: 72px;
-      background: rgba(3,7,30,0.82);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 72px;
+      background: rgba(3,7,30,0.85);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
       border-bottom: 1px solid var(--border);
       transition: box-shadow .3s;
     }
-    nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.6); }
+    nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.7); }
 
-    .nav-logo {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none;
-    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .nav-logo-mark {
       width: 36px; height: 36px;
       background: linear-gradient(135deg, var(--blue) 0%, var(--gold) 100%);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 14px; color: #fff;
-      letter-spacing: -0.5px;
+      font-weight: 800; font-size: 13px; color: #fff; letter-spacing: -0.5px;
     }
-    .nav-logo-text {
-      font-size: 15px; font-weight: 700;
-      color: var(--white); letter-spacing: 0.02em;
-    }
+    .nav-logo-text { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
     .nav-logo-text span { color: var(--gold); }
 
-    .nav-links {
-      display: flex; align-items: center; gap: 36px;
-      list-style: none;
-    }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
     .nav-links a {
       text-decoration: none; color: var(--gray-2);
       font-size: 14px; font-weight: 500; letter-spacing: 0.03em;
-      transition: color .2s;
-      position: relative;
+      transition: color .2s; position: relative;
     }
     .nav-links a::after {
       content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
@@ -110,10 +98,10 @@
     .nav-cta {
       padding: 9px 22px;
       background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
-      color: #fff !important;
-      border-radius: 6px; font-size: 13px !important;
-      font-weight: 600 !important; letter-spacing: 0.04em !important;
+      color: #fff !important; border-radius: 6px;
+      font-size: 13px !important; font-weight: 600 !important;
       transition: opacity .2s, transform .2s !important;
+      box-shadow: 0 4px 20px rgba(19,83,217,0.4);
     }
     .nav-cta:hover { opacity: .88; transform: translateY(-1px); }
     .nav-cta::after { display: none !important; }
@@ -125,163 +113,182 @@
       align-items: center; justify-content: center;
       text-align: center;
       padding: 120px 5% 80px;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
+    }
+
+    /* Canvas particles */
+    #hero-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
     }
 
     /* grid lines */
     .hero::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 80px 80px;
       mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+      z-index: 0;
     }
 
     /* glow orbs */
-    .hero-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.18;
-      pointer-events: none;
-    }
-    .hero-orb-1 {
-      width: 600px; height: 600px;
-      background: var(--blue);
-      top: -100px; left: -200px;
-      animation: drift 14s ease-in-out infinite;
-    }
-    .hero-orb-2 {
-      width: 500px; height: 500px;
-      background: var(--gold);
-      bottom: -80px; right: -150px;
-      animation: drift 18s ease-in-out infinite reverse;
-    }
-    .hero-orb-3 {
-      width: 350px; height: 350px;
-      background: #5b21b6;
-      top: 40%; left: 55%;
-      animation: drift 22s ease-in-out infinite 3s;
-    }
+    .hero-orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .hero-orb-1 { width: 700px; height: 700px; background: var(--blue); opacity: 0.13; top: -150px; left: -250px; animation: drift 16s ease-in-out infinite; }
+    .hero-orb-2 { width: 550px; height: 550px; background: var(--gold); opacity: 0.1; bottom: -100px; right: -150px; animation: drift 20s ease-in-out infinite reverse; }
+    .hero-orb-3 { width: 400px; height: 400px; background: #5b21b6; opacity: 0.1; top: 40%; left: 55%; animation: drift 24s ease-in-out infinite 3s; }
 
     @keyframes drift {
       0%,100% { transform: translate(0,0) scale(1); }
-      33%      { transform: translate(40px,-30px) scale(1.06); }
-      66%      { transform: translate(-20px,20px) scale(0.96); }
+      33%      { transform: translate(50px,-40px) scale(1.07); }
+      66%      { transform: translate(-25px,25px) scale(0.95); }
     }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 16px;
-      border: 1px solid rgba(201,168,76,0.35);
+      padding: 6px 18px;
+      border: 1px solid rgba(201,168,76,0.4);
       border-radius: 100px;
       font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
       color: var(--gold-light);
-      background: rgba(201,168,76,0.07);
+      background: rgba(201,168,76,0.08);
       margin-bottom: 32px;
       position: relative; z-index: 1;
       text-transform: uppercase;
+      animation: fadeInDown .8s ease both;
     }
     .hero-badge-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--gold-light);
-      box-shadow: 0 0 8px var(--gold-light);
+      background: var(--gold-light); box-shadow: 0 0 10px var(--gold-light);
       animation: pulse 2s infinite;
     }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(0.8)} }
 
     .hero h1 {
-      font-size: clamp(2.8rem, 6vw, 5.2rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
+      font-size: clamp(2.8rem, 6vw, 5.4rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 24px;
       position: relative; z-index: 1;
+      animation: fadeInUp .9s ease .1s both;
     }
     .hero h1 .line-1 { display: block; color: var(--white); }
     .hero h1 .line-2 {
       display: block;
-      background: linear-gradient(90deg, var(--blue-light) 0%, var(--gold-light) 60%, var(--blue-light) 100%);
+      background: linear-gradient(90deg, var(--blue-light) 0%, var(--gold-light) 50%, var(--blue-light) 100%);
       background-size: 200% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       animation: shimmer 4s linear infinite;
     }
     @keyframes shimmer { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
 
     .hero-sub {
       font-size: 1.1rem; font-weight: 300; color: var(--gray-2);
-      max-width: 560px; margin: 0 auto 48px;
-      line-height: 1.8; position: relative; z-index: 1;
+      max-width: 620px; margin: 0 auto 48px;
+      line-height: 1.9; position: relative; z-index: 1;
+      animation: fadeInUp .9s ease .2s both;
     }
 
     .hero-actions {
       display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
       position: relative; z-index: 1;
+      animation: fadeInUp .9s ease .3s both;
     }
     .btn-primary {
-      padding: 15px 36px;
+      padding: 15px 38px;
       background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
       color: #fff; border: none; border-radius: 8px;
       font-size: 15px; font-weight: 600; letter-spacing: 0.03em;
       cursor: pointer; text-decoration: none;
       transition: transform .2s, box-shadow .2s;
       box-shadow: 0 8px 32px rgba(19,83,217,0.45);
+      position: relative; overflow: hidden;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(19,83,217,0.6); }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0; transition: opacity .2s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(19,83,217,0.6); }
+    .btn-primary:hover::before { opacity: 1; }
 
     .btn-ghost {
-      padding: 14px 34px;
-      background: transparent;
-      color: var(--gray-1); border: 1px solid var(--border);
+      padding: 14px 36px;
+      background: transparent; color: var(--gray-1);
+      border: 1px solid rgba(255,255,255,0.15);
       border-radius: 8px; font-size: 15px; font-weight: 500;
       cursor: pointer; text-decoration: none;
       transition: border-color .2s, color .2s, background .2s;
       backdrop-filter: blur(8px);
     }
-    .btn-ghost:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); color: #fff; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.07); color: #fff; }
 
     .hero-stats {
       display: flex; gap: 64px; margin-top: 80px;
       position: relative; z-index: 1;
       padding-top: 40px;
       border-top: 1px solid var(--border);
+      animation: fadeInUp .9s ease .4s both;
     }
     .stat { text-align: center; }
     .stat-num {
-      font-size: 2.2rem; font-weight: 800;
+      font-size: 2.4rem; font-weight: 800;
       background: linear-gradient(135deg, var(--white) 0%, var(--gray-2) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
-    .stat-num span { color: var(--gold-light); -webkit-text-fill-color: var(--gold-light); }
+    .stat-num .gold { color: var(--gold-light); -webkit-text-fill-color: var(--gold-light); }
     .stat-label { font-size: 12px; color: var(--gray-3); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
 
+    @keyframes fadeInUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+    @keyframes fadeInDown { from { opacity:0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+
+    /* ─── MARQUEE / TICKER ─── */
+    .marquee-section {
+      overflow: hidden;
+      padding: 28px 0;
+      background: var(--navy-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    .marquee-section:hover .marquee-track { animation-play-state: paused; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    .marquee-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 48px;
+      font-size: 14px; font-weight: 600; color: var(--gray-3);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      border-right: 1px solid var(--border);
+      transition: color .25s;
+    }
+    .marquee-item:hover { color: var(--white); }
+    .marquee-item span { color: var(--gold); }
+
     /* ─── SECTION ─── */
-    section { padding: 100px 5%; position: relative; }
+    section { padding: 110px 5%; position: relative; }
     .section-label {
       display: inline-block;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
     }
     .section-title {
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(2rem, 4vw, 3.2rem);
       font-weight: 700; letter-spacing: -0.02em;
       color: var(--white); margin-bottom: 16px;
     }
-    .section-sub {
-      font-size: 1rem; color: var(--gray-2);
-      max-width: 520px; line-height: 1.8;
-    }
-    .section-header { margin-bottom: 64px; }
+    .section-sub { font-size: 1rem; color: var(--gray-2); max-width: 560px; line-height: 1.9; }
+    .section-header { margin-bottom: 72px; }
 
-    /* ─── DIVIDER LINE ─── */
+    /* ─── DIVIDER ─── */
     .divider {
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
@@ -290,78 +297,142 @@
 
     /* ─── SERVICES ─── */
     #services { background: var(--navy-2); }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
     .service-card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      padding: 40px 36px;
-      position: relative;
-      overflow: hidden;
-      transition: background .3s, border-color .3s, transform .3s;
+      background: var(--glass); border: 1px solid var(--border);
+      padding: 44px 38px; position: relative; overflow: hidden;
+      transition: background .35s, border-color .35s, transform .35s;
       cursor: default;
+      transform-style: preserve-3d;
     }
     .service-card:hover {
-      background: rgba(19,83,217,0.06);
-      border-color: rgba(19,83,217,0.3);
+      background: rgba(19,83,217,0.07);
+      border-color: rgba(19,83,217,0.35);
+      transform: translateY(-4px);
     }
     .service-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 2px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, transparent, var(--blue-light), transparent);
-      opacity: 0; transition: opacity .3s;
+      opacity: 0; transition: opacity .35s;
     }
     .service-card:hover::before { opacity: 1; }
+    .service-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(46,106,246,0.08) 0%, transparent 60%);
+      opacity: 0; transition: opacity .35s;
+      pointer-events: none;
+    }
+    .service-card:hover::after { opacity: 1; }
 
     .service-icon {
-      width: 52px; height: 52px;
+      width: 56px; height: 56px;
       background: linear-gradient(135deg, rgba(19,83,217,0.2) 0%, rgba(201,168,76,0.12) 100%);
-      border: 1px solid rgba(19,83,217,0.25);
-      border-radius: 12px;
+      border: 1px solid rgba(19,83,217,0.3);
+      border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      margin-bottom: 24px;
+      font-size: 24px; margin-bottom: 28px;
+      transition: transform .35s;
     }
-    .service-card h3 {
-      font-size: 1.05rem; font-weight: 600; color: var(--white);
-      margin-bottom: 12px; letter-spacing: 0.01em;
-    }
-    .service-card p {
-      font-size: 0.875rem; color: var(--gray-3); line-height: 1.8;
-      font-weight: 300;
+    .service-card:hover .service-icon { transform: scale(1.1) rotate(-4deg); }
+    .service-card h3 { font-size: 1.08rem; font-weight: 600; color: var(--white); margin-bottom: 14px; }
+    .service-card p { font-size: 0.875rem; color: var(--gray-3); line-height: 1.9; font-weight: 300; }
+    .service-tag {
+      display: inline-block; margin-top: 20px;
+      padding: 4px 12px; border-radius: 4px;
+      background: rgba(19,83,217,0.12);
+      border: 1px solid rgba(19,83,217,0.2);
+      font-size: 11px; font-weight: 600; color: var(--blue-light);
+      letter-spacing: 0.06em;
     }
     .service-num {
       position: absolute; top: 28px; right: 28px;
       font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.1);
+    }
+
+    /* ─── ADVANTAGE ─── */
+    #advantage { background: var(--navy); }
+    .adv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .adv-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 28px;
+      text-align: center; position: relative; overflow: hidden;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
+    .adv-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(201,168,76,0.3);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+    .adv-icon {
+      font-size: 2.4rem; margin-bottom: 20px;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(201,168,76,0.4));
+    }
+    .adv-num {
+      font-size: 2.6rem; font-weight: 800; letter-spacing: -0.04em;
+      background: linear-gradient(135deg, var(--gold-light), var(--white));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 8px;
+    }
+    .adv-num sub { font-size: 1.2rem; font-weight: 500; letter-spacing: 0; }
+    .adv-label { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .adv-desc { font-size: 0.78rem; color: var(--gray-3); line-height: 1.7; }
+
+    /* ─── SOLUTIONS ─── */
+    #solutions { background: var(--navy-2); }
+    .solutions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .sol-card {
+      position: relative; overflow: hidden;
+      background: var(--glass); border: 1px solid var(--border);
+      padding: 52px 48px;
+      transition: background .35s, border-color .35s;
+    }
+    .sol-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.12); }
+    .sol-card:hover .sol-arrow { transform: translateX(6px); }
+    .sol-index {
+      font-size: 4rem; font-weight: 800; letter-spacing: -0.05em;
+      color: rgba(255,255,255,0.05); position: absolute; top: 20px; right: 28px;
+      line-height: 1;
+    }
+    .sol-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .sol-card h3 { font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: 16px; }
+    .sol-card p { font-size: 0.875rem; color: var(--gray-3); line-height: 1.9; margin-bottom: 24px; font-weight: 300; max-width: 380px; }
+    .sol-points { list-style: none; margin-bottom: 28px; }
+    .sol-points li {
+      font-size: 0.82rem; color: var(--gray-2); padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sol-points li::before { content: '✦'; color: var(--gold); font-size: 8px; flex-shrink: 0; }
+    .sol-arrow {
+      color: var(--blue-light); font-size: 1.1rem;
+      transition: transform .25s; display: inline-block;
     }
 
     /* ─── CLIENTS ─── */
     #clients { background: var(--navy); }
     .clients-logos {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 2px;
-      margin-bottom: 80px;
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 2px; margin-bottom: 80px;
     }
     .client-logo {
-      border: 1px solid var(--border);
-      background: var(--glass);
+      border: 1px solid var(--border); background: var(--glass);
       display: flex; align-items: center; justify-content: center;
-      padding: 32px 24px;
-      font-weight: 600; font-size: 14px; color: var(--gray-3);
-      letter-spacing: 0.05em;
-      transition: color .25s, background .25s, border-color .25s;
+      padding: 36px 20px;
+      font-weight: 700; font-size: 14px; color: var(--gray-3);
+      letter-spacing: 0.04em;
+      transition: color .25s, background .25s, border-color .25s, transform .25s;
+      cursor: default;
     }
     .client-logo:hover {
       color: var(--white); background: rgba(255,255,255,0.05);
       border-color: rgba(255,255,255,0.15);
+      transform: scale(1.02);
     }
 
     /* timeline */
@@ -370,95 +441,124 @@
       content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px;
       width: 1px; background: linear-gradient(to bottom, var(--blue), var(--gold), transparent);
     }
-    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-item { position: relative; margin-bottom: 52px; }
     .timeline-dot {
       position: absolute; left: -36px; top: 4px;
       width: 16px; height: 16px; border-radius: 50%;
-      background: var(--navy-2);
-      border: 2px solid var(--blue-light);
-      box-shadow: 0 0 12px rgba(46,106,246,0.5);
+      background: var(--navy-2); border: 2px solid var(--blue-light);
+      box-shadow: 0 0 14px rgba(46,106,246,0.6);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .timeline-item:hover .timeline-dot {
+      border-color: var(--gold-light);
+      box-shadow: 0 0 14px rgba(201,168,76,0.6);
     }
     .timeline-year {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
       color: var(--blue-light); margin-bottom: 6px; text-transform: uppercase;
     }
     .timeline-title { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
-    .timeline-desc { font-size: 0.875rem; color: var(--gray-3); line-height: 1.7; font-weight: 300; }
+    .timeline-desc { font-size: 0.875rem; color: var(--gray-3); line-height: 1.8; font-weight: 300; }
 
-    /* ─── CERTIFICATIONS ─── */
+    /* ─── CERTS ─── */
     #certs { background: var(--navy-2); }
-    .certs-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-    }
+    .certs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
     .cert-card {
-      border: 1px solid var(--border);
-      background: var(--glass);
-      padding: 36px 28px;
-      text-align: center;
-      transition: background .3s, border-color .3s;
+      border: 1px solid var(--border); background: var(--glass);
+      padding: 40px 28px; text-align: center;
+      transition: background .3s, border-color .3s, transform .3s;
     }
     .cert-card:hover {
       background: rgba(201,168,76,0.05);
-      border-color: rgba(201,168,76,0.25);
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-3px);
     }
     .cert-icon {
-      width: 64px; height: 64px; border-radius: 50%;
+      width: 68px; height: 68px; border-radius: 50%;
       background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, rgba(19,83,217,0.12) 100%);
-      border: 1px solid rgba(201,168,76,0.2);
+      border: 1px solid rgba(201,168,76,0.22);
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px; margin: 0 auto 20px;
+      font-size: 28px; margin: 0 auto 22px;
+      transition: transform .3s;
     }
-    .cert-card h4 {
-      font-size: 0.9rem; font-weight: 600; color: var(--white);
-      margin-bottom: 8px; letter-spacing: 0.02em;
-    }
+    .cert-card:hover .cert-icon { transform: rotate(8deg) scale(1.08); }
+    .cert-card h4 { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 10px; }
     .cert-card p { font-size: 0.78rem; color: var(--gray-3); line-height: 1.7; }
 
-    /* ─── TEAM / ABOUT ─── */
+    /* ─── ABOUT ─── */
     #about { background: var(--navy); }
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-      align-items: center;
-    }
-    .about-visual {
-      position: relative;
-    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center; }
     .metric-card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px 32px;
-      margin-bottom: 16px;
-      display: flex; align-items: center; gap: 24px;
-      transition: border-color .3s;
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px 32px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 28px;
+      transition: border-color .3s, transform .3s;
     }
-    .metric-card:hover { border-color: rgba(19,83,217,0.35); }
+    .metric-card:hover { border-color: rgba(19,83,217,0.4); transform: translateX(4px); }
     .metric-val {
-      font-size: 2rem; font-weight: 800; letter-spacing: -0.03em;
-      white-space: nowrap;
+      font-size: 2.2rem; font-weight: 800; letter-spacing: -0.04em; white-space: nowrap;
       background: linear-gradient(135deg, var(--blue-light), var(--gold-light));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .metric-info-label { font-size: 0.85rem; font-weight: 600; color: var(--white); }
-    .metric-info-sub { font-size: 0.78rem; color: var(--gray-3); margin-top: 2px; }
+    .metric-info-label { font-size: 0.875rem; font-weight: 600; color: var(--white); }
+    .metric-info-sub { font-size: 0.78rem; color: var(--gray-3); margin-top: 3px; line-height: 1.5; }
+
+    /* tech bars */
+    .tech-bars { margin-top: 40px; }
+    .tech-bar-item { margin-bottom: 20px; }
+    .tech-bar-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .tech-bar-label { font-size: 13px; font-weight: 500; color: var(--gray-2); }
+    .tech-bar-pct { font-size: 12px; font-weight: 600; color: var(--gold-light); }
+    .tech-bar-track {
+      height: 4px; background: rgba(255,255,255,0.06);
+      border-radius: 2px; overflow: hidden;
+    }
+    .tech-bar-fill {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--gold-light));
+      width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { background: var(--navy-2); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testi-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 32px;
+      transition: transform .3s, border-color .3s;
+      position: relative;
+    }
+    .testi-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.12); }
+    .testi-quote {
+      font-size: 2rem; color: var(--blue-light); opacity: 0.5;
+      line-height: 1; margin-bottom: 16px; font-family: Georgia, serif;
+    }
+    .testi-text { font-size: 0.88rem; color: var(--gray-2); line-height: 1.9; font-weight: 300; margin-bottom: 24px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--gold) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700; flex-shrink: 0;
+    }
+    .testi-name { font-size: 0.875rem; font-weight: 600; color: var(--white); }
+    .testi-role { font-size: 0.75rem; color: var(--gray-3); margin-top: 2px; }
+    .testi-stars { color: var(--gold-light); font-size: 12px; margin-bottom: 16px; letter-spacing: 2px; }
 
     /* ─── CONTACT ─── */
-    #contact { background: var(--navy-2); }
+    #contact { background: var(--navy); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
-    .contact-info h3 { font-size: 1.4rem; font-weight: 600; color: var(--white); margin-bottom: 24px; }
-    .contact-item {
-      display: flex; gap: 16px; margin-bottom: 28px; align-items: flex-start;
-    }
+    .contact-item { display: flex; gap: 16px; margin-bottom: 28px; align-items: flex-start; }
     .contact-item-icon {
-      width: 40px; height: 40px; border-radius: 8px;
-      background: rgba(19,83,217,0.12); border: 1px solid rgba(19,83,217,0.2);
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(19,83,217,0.12); border: 1px solid rgba(19,83,217,0.22);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
+      font-size: 18px; flex-shrink: 0;
+      transition: background .25s, border-color .25s;
     }
+    .contact-item:hover .contact-item-icon { background: rgba(19,83,217,0.2); border-color: rgba(19,83,217,0.4); }
     .contact-item-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--gray-3); text-transform: uppercase; margin-bottom: 4px; }
-    .contact-item-val { font-size: 0.9rem; color: var(--white); font-weight: 400; }
+    .contact-item-val { font-size: 0.9rem; color: var(--white); }
 
     .contact-form { display: flex; flex-direction: column; gap: 16px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -467,14 +567,10 @@
     .form-group input,
     .form-group select,
     .form-group textarea {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 13px 16px;
-      color: var(--white); font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color .2s, background .2s;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 8px; padding: 13px 16px;
+      color: var(--white); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .2s, background .2s;
     }
     .form-group input:focus,
     .form-group select:focus,
@@ -482,54 +578,40 @@
       border-color: var(--blue-light);
       background: rgba(19,83,217,0.06);
     }
-    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group textarea { resize: vertical; min-height: 130px; }
     .form-group select option { background: var(--navy-2); }
     .form-submit {
-      padding: 16px;
+      padding: 16px; margin-top: 8px;
       background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
       color: #fff; border: none; border-radius: 8px;
       font-size: 15px; font-weight: 600; letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: opacity .2s, transform .2s;
+      cursor: pointer; transition: opacity .2s, transform .2s;
       box-shadow: 0 8px 32px rgba(19,83,217,0.4);
-      margin-top: 8px;
     }
     .form-submit:hover { opacity: .88; transform: translateY(-2px); }
 
     /* ─── FOOTER ─── */
-    footer {
-      background: var(--navy);
-      border-top: 1px solid var(--border);
-      padding: 48px 5% 32px;
-    }
-    .footer-top {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      gap: 40px; margin-bottom: 48px;
-    }
+    footer { background: var(--navy-2); border-top: 1px solid var(--border); padding: 56px 5% 32px; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; margin-bottom: 56px; }
     .footer-brand { max-width: 300px; }
-    .footer-logo {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 16px;
-    }
+    .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
     .footer-logo-mark {
-      width: 32px; height: 32px;
+      width: 34px; height: 34px;
       background: linear-gradient(135deg, var(--blue) 0%, var(--gold) 100%);
-      border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 12px; color: #fff;
     }
     .footer-logo-text { font-size: 14px; font-weight: 700; color: var(--white); }
     .footer-logo-text span { color: var(--gold); }
-    .footer-brand p { font-size: 13px; color: var(--gray-3); line-height: 1.8; }
+    .footer-brand p { font-size: 13px; color: var(--gray-3); line-height: 1.9; }
     .footer-links h5 {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-      color: var(--gray-3); text-transform: uppercase; margin-bottom: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      color: var(--gray-3); text-transform: uppercase; margin-bottom: 22px;
     }
     .footer-links ul { list-style: none; }
-    .footer-links li { margin-bottom: 12px; }
+    .footer-links li { margin-bottom: 13px; }
     .footer-links a {
-      text-decoration: none; color: var(--gray-2);
-      font-size: 13px; font-weight: 400;
+      text-decoration: none; color: var(--gray-2); font-size: 13px;
       transition: color .2s;
     }
     .footer-links a:hover { color: var(--white); }
@@ -542,28 +624,29 @@
     .footer-bottom a:hover { color: var(--white); }
 
     /* ─── ANIMATIONS ─── */
-    .fade-up {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
+    .fade-up { opacity: 0; transform: translateY(32px); transition: opacity .75s ease, transform .75s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-    /* stagger children */
-    .stagger > * { transition-delay: calc(var(--i, 0) * 80ms); }
+    .stagger > * { transition-delay: calc(var(--i, 0) * 90ms); }
 
     /* ─── RESPONSIVE ─── */
+    @media (max-width: 1200px) {
+      .adv-grid { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 1024px) {
       .services-grid { grid-template-columns: repeat(2, 1fr); }
       .clients-logos { grid-template-columns: repeat(3, 1fr); }
       .certs-grid { grid-template-columns: repeat(2, 1fr); }
-      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-grid, .contact-grid, .solutions-grid { grid-template-columns: 1fr; gap: 48px; }
+      .testi-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .hero-stats { gap: 32px; flex-wrap: wrap; justify-content: center; }
+      .hero-stats { gap: 28px; flex-wrap: wrap; justify-content: center; }
       .services-grid { grid-template-columns: 1fr; }
       .clients-logos { grid-template-columns: repeat(2, 1fr); }
       .certs-grid { grid-template-columns: 1fr 1fr; }
+      .adv-grid { grid-template-columns: 1fr 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
       .footer-top { flex-direction: column; }
       .form-row { grid-template-columns: 1fr; }
     }
@@ -571,15 +654,12 @@
     /* ─── UTILITY ─── */
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
     .text-gold { color: var(--gold-light); }
-    .highlight-bar {
-      display: inline-block;
-      width: 32px; height: 2px;
-      background: linear-gradient(90deg, var(--blue), var(--gold));
-      border-radius: 1px; vertical-align: middle; margin-right: 12px;
-    }
   </style>
 </head>
 <body>
+
+<div id="scroll-progress"></div>
+<canvas id="hero-canvas"></canvas>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -589,6 +669,7 @@
   </a>
   <ul class="nav-links">
     <li><a href="#services">核心服务</a></li>
+    <li><a href="#solutions">解决方案</a></li>
     <li><a href="#clients">服务客户</a></li>
     <li><a href="#certs">资质荣誉</a></li>
     <li><a href="#about">关于我们</a></li>
@@ -604,52 +685,80 @@
 
   <div class="hero-badge">
     <div class="hero-badge-dot"></div>
-    高新技术企业认证 · 国家双软认证
+    高新技术企业认证 &nbsp;·&nbsp; 国家双软认证 &nbsp;·&nbsp; ISO 27001
   </div>
 
   <h1>
-    <span class="line-1">创新驱动科技</span>
-    <span class="line-2">技术赋能产业</span>
+    <span class="line-1">数字经济基础设施</span>
+    <span class="line-2">科技驱动商业未来</span>
   </h1>
 
   <p class="hero-sub">
-    有妖互娱（南京）科技有限公司，专注聚合支付、数字化经营与金融科技，
-    为企业提供全链路数字解决方案。
+    有妖互娱（南京）科技有限公司，深耕聚合支付、数字化经营与金融科技领域，
+    年处理交易额超 500 亿元，为金融、零售、电商行业头部企业提供全链路数字解决方案。
   </p>
 
   <div class="hero-actions">
-    <a href="#services" class="btn-primary">探索核心服务</a>
-    <a href="#contact" class="btn-ghost">立即咨询</a>
+    <a href="#solutions" class="btn-primary">查看解决方案 →</a>
+    <a href="#contact" class="btn-ghost">预约专属咨询</a>
   </div>
 
   <div class="hero-stats">
     <div class="stat">
-      <div class="stat-num">8<span>+</span></div>
-      <div class="stat-label">年行业经验</div>
+      <div class="stat-num"><span class="count" data-target="500">0</span><span class="gold">亿+</span></div>
+      <div class="stat-label">年处理交易额</div>
     </div>
     <div class="stat">
-      <div class="stat-num">500<span>+</span></div>
-      <div class="stat-label">合作客户</div>
+      <div class="stat-num"><span class="count" data-target="800">0</span><span class="gold">+</span></div>
+      <div class="stat-label">合作企业客户</div>
     </div>
     <div class="stat">
-      <div class="stat-num">82<span>%</span></div>
-      <div class="stat-label">本科以上人员</div>
+      <div class="stat-num"><span class="count" data-target="99">0</span><span class="gold">.99%</span></div>
+      <div class="stat-label">系统可用性 SLA</div>
     </div>
     <div class="stat">
-      <div class="stat-num">50<span>%</span></div>
-      <div class="stat-label">软件技术人员</div>
+      <div class="stat-num"><span class="count" data-target="8">0</span><span class="gold">年+</span></div>
+      <div class="stat-label">深耕行业经验</div>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marquee">
+    <div class="marquee-item"><span>✦</span> 聚合支付系统</div>
+    <div class="marquee-item"><span>✦</span> APP & 小程序开发</div>
+    <div class="marquee-item"><span>✦</span> 商户数字化经营</div>
+    <div class="marquee-item"><span>✦</span> 金融获客服务</div>
+    <div class="marquee-item"><span>✦</span> AI 风控引擎</div>
+    <div class="marquee-item"><span>✦</span> 平台数据优化</div>
+    <div class="marquee-item"><span>✦</span> 企业软件定制</div>
+    <div class="marquee-item"><span>✦</span> 苏宁易购</div>
+    <div class="marquee-item"><span>✦</span> 星图金融</div>
+    <div class="marquee-item"><span>✦</span> 招商银行</div>
+    <div class="marquee-item"><span>✦</span> 京东金融</div>
+    <div class="marquee-item"><span>✦</span> 中国银联</div>
+    <div class="marquee-item"><span>✦</span> 聚合支付系统</div>
+    <div class="marquee-item"><span>✦</span> APP & 小程序开发</div>
+    <div class="marquee-item"><span>✦</span> 商户数字化经营</div>
+    <div class="marquee-item"><span>✦</span> 金融获客服务</div>
+    <div class="marquee-item"><span>✦</span> AI 风控引擎</div>
+    <div class="marquee-item"><span>✦</span> 平台数据优化</div>
+    <div class="marquee-item"><span>✦</span> 企业软件定制</div>
+    <div class="marquee-item"><span>✦</span> 苏宁易购</div>
+    <div class="marquee-item"><span>✦</span> 星图金融</div>
+    <div class="marquee-item"><span>✦</span> 招商银行</div>
+    <div class="marquee-item"><span>✦</span> 京东金融</div>
+    <div class="marquee-item"><span>✦</span> 中国银联</div>
+  </div>
+</div>
 
 <!-- SERVICES -->
 <section id="services">
   <div class="section-header fade-up">
     <div class="section-label">Core Services</div>
     <h2 class="section-title">核心服务能力</h2>
-    <p class="section-sub">依托深厚的技术积累，为各行业客户提供端到端的数字化转型解决方案</p>
+    <p class="section-sub">依托深厚的技术积累与行业经验，为各行业客户提供端到端数字化转型解决方案</p>
   </div>
 
   <div class="services-grid stagger">
@@ -657,37 +766,146 @@
       <span class="service-num">01</span>
       <div class="service-icon">💳</div>
       <h3>聚合支付系统</h3>
-      <p>整合微信支付、支付宝等主流支付渠道，提供一站式收银解决方案，帮助商户提升收款效率与资金安全性。</p>
+      <p>整合微信支付、支付宝、银联云闪付等全主流支付渠道，提供统一收银 SDK 与 API，支持线上线下全场景覆盖，日均处理交易峰值超 300 万笔，资金 T+1 结算，资金安全有保障。</p>
+      <span class="service-tag">金融级安全</span>
     </div>
     <div class="service-card fade-up" style="--i:1">
       <span class="service-num">02</span>
       <div class="service-icon">📱</div>
-      <h3>APP与小程序开发</h3>
-      <p>从需求分析到上线运营，提供原生 App、微信/支付宝小程序全栈开发，助力品牌构建线上流量入口。</p>
+      <h3>APP 与小程序开发</h3>
+      <p>从产品规划到上线运营，提供 iOS/Android 原生 App、React Native 跨平台、微信/支付宝/抖音小程序全栈交付。采用 CI/CD 流水线，版本迭代周期压缩至 2 周以内。</p>
+      <span class="service-tag">敏捷交付</span>
     </div>
     <div class="service-card fade-up" style="--i:2">
       <span class="service-num">03</span>
       <div class="service-icon">🏪</div>
       <h3>商户数字化经营</h3>
-      <p>整合营销工具、会员管理与数据看板，为线下商户提供完整的数字化运营体系，提升客户粘性与复购率。</p>
+      <p>整合 CRM 会员管理、精准营销自动化、积分体系与数据看板，实现从引流到复购的完整闭环。头部零售客户落地后，会员复购率平均提升 38%，客单价提升 22%。</p>
+      <span class="service-tag">增长驱动</span>
     </div>
     <div class="service-card fade-up" style="--i:3">
       <span class="service-num">04</span>
       <div class="service-icon">📊</div>
       <h3>金融获客服务</h3>
-      <p>依托精准的用户画像与AI算法，为金融机构提供获客与风控支持，提升贷款、保险等金融产品的转化效率。</p>
+      <p>依托自研用户画像引擎与 AI 评分模型，为银行、消费金融、保险机构提供精准获客与风控支持。合作机构审批通过率提升 45%，不良率控制在行业均值的 60% 以下。</p>
+      <span class="service-tag">AI 赋能</span>
     </div>
     <div class="service-card fade-up" style="--i:4">
       <span class="service-num">05</span>
       <div class="service-icon">🔬</div>
       <h3>平台数据优化</h3>
-      <p>通过大数据分析与用户行为追踪，持续优化平台产品的留存与变现指标，驱动数据驱动的增长决策。</p>
+      <p>基于埋点体系、A/B 测试框架与实时数仓，提供用户行为分析、留存漏斗与 LTV 预测服务。通过持续数据驱动迭代，合作平台次日留存率平均提升 25%，付费转化率提升 18%。</p>
+      <span class="service-tag">数据驱动</span>
     </div>
     <div class="service-card fade-up" style="--i:5">
       <span class="service-num">06</span>
       <div class="service-icon">⚙️</div>
       <h3>软件定制开发</h3>
-      <p>承接企业级定制化软件项目，覆盖ERP、CRM、供应链管理等核心业务系统，交付稳定可扩展的技术架构。</p>
+      <p>承接企业级定制化软件项目，覆盖 ERP、CRM、供应链管理与 SaaS 平台搭建。采用微服务架构与云原生技术栈，系统可用性保障 99.99%，支持亿级数据规模横向扩展。</p>
+      <span class="service-tag">企业级架构</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ADVANTAGE -->
+<section id="advantage">
+  <div class="section-header fade-up" style="text-align:center;">
+    <div class="section-label">Why Choose Us</div>
+    <h2 class="section-title">核心竞争优势</h2>
+    <p class="section-sub" style="margin:0 auto;">以技术深度、安全合规与行业经验构筑企业数字化护城河</p>
+  </div>
+  <div class="adv-grid stagger">
+    <div class="adv-card fade-up" style="--i:0">
+      <span class="adv-icon">⚡</span>
+      <div class="adv-num"><span class="count" data-target="99">0</span><sub>.99%</sub></div>
+      <div class="adv-label">服务可用性 SLA</div>
+      <div class="adv-desc">多活容灾架构 + 智能熔断机制，全年故障时间不超过 53 分钟，金融级稳定性保障</div>
+    </div>
+    <div class="adv-card fade-up" style="--i:1">
+      <span class="adv-icon">🔐</span>
+      <div class="adv-num">&lt;<span class="count" data-target="50">0</span><sub>ms</sub></div>
+      <div class="adv-label">支付响应延迟</div>
+      <div class="adv-desc">全链路性能调优，P99 延迟稳定在 50ms 以内，高并发场景下毫秒级响应</div>
+    </div>
+    <div class="adv-card fade-up" style="--i:2">
+      <span class="adv-icon">🚀</span>
+      <div class="adv-num"><span class="count" data-target="300">0</span><sub>万+</sub></div>
+      <div class="adv-label">日均处理笔数</div>
+      <div class="adv-desc">弹性扩容架构支撑双十一级流量洪峰，峰值 TPS 超过 10 万，零宕机记录</div>
+    </div>
+    <div class="adv-card fade-up" style="--i:3">
+      <span class="adv-icon">🛡️</span>
+      <div class="adv-num"><span class="count" data-target="0">0</span><sub> 次</sub></div>
+      <div class="adv-label">重大安全事故</div>
+      <div class="adv-desc">ISO 27001 体系认证，全链路 TLS 加密 + 实时风控引擎，8 年零重大安全事故</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOLUTIONS -->
+<section id="solutions">
+  <div class="section-header fade-up">
+    <div class="section-label">Industry Solutions</div>
+    <h2 class="section-title">行业解决方案</h2>
+    <p class="section-sub">深度理解行业痛点，提供开箱即用的垂直行业数字化解决方案</p>
+  </div>
+
+  <div class="solutions-grid stagger">
+    <div class="sol-card fade-up" style="--i:0">
+      <div class="sol-index">01</div>
+      <div class="sol-label">Retail & Commerce</div>
+      <h3>零售与新消费</h3>
+      <p>帮助线下门店、连锁品牌与新零售企业打通线上线下支付与会员体系，构建私域流量运营闭环，实现千店数据统一管理。</p>
+      <ul class="sol-points">
+        <li>多门店聚合收银 + 统一对账，日结效率提升 80%</li>
+        <li>会员积分 + 营销自动化，复购率提升 35%+</li>
+        <li>实时销售数据看板，经营决策响应速度×3</li>
+        <li>支持 O2O、直播电商、到店到家全场景</li>
+      </ul>
+      <span class="sol-arrow">→ 了解详情</span>
+    </div>
+    <div class="sol-card fade-up" style="--i:1">
+      <div class="sol-index">02</div>
+      <div class="sol-label">Financial Services</div>
+      <h3>金融科技与银行</h3>
+      <p>为银行、消费金融、保险公司提供 AI 驱动的精准获客、智能风控与数字化运营解决方案，全面提升金融机构的获客效率与风险把控能力。</p>
+      <ul class="sol-points">
+        <li>AI 用户画像引擎，精准触达目标客群</li>
+        <li>实时反欺诈系统，不良率降低 40%+</li>
+        <li>贷款审批自动化，处理时效从天级缩短至分钟级</li>
+        <li>监管合规数据报送，全流程留痕可追溯</li>
+      </ul>
+      <span class="sol-arrow">→ 了解详情</span>
+    </div>
+    <div class="sol-card fade-up" style="--i:2">
+      <div class="sol-index">03</div>
+      <div class="sol-label">SaaS & Internet Platform</div>
+      <h3>SaaS 与互联网平台</h3>
+      <p>为中大型互联网平台提供增长数据分析、用户分层运营与变现策略优化，以数据科学驱动平台 DAU 与 ARPU 持续提升。</p>
+      <ul class="sol-points">
+        <li>全端埋点体系 + 实时数仓，数据延迟 &lt;5 秒</li>
+        <li>智能 A/B 测试框架，同时支持 1000+ 实验组</li>
+        <li>用户 LTV 预测模型，广告 ROI 提升 55%</li>
+        <li>付费漏斗深度分析，转化率提升 20%+</li>
+      </ul>
+      <span class="sol-arrow">→ 了解详情</span>
+    </div>
+    <div class="sol-card fade-up" style="--i:3">
+      <div class="sol-index">04</div>
+      <div class="sol-label">Enterprise Digital</div>
+      <h3>大型企业数字化</h3>
+      <p>为制造、物流、供应链等传统行业大型企业提供核心业务系统定制开发与数字化转型顶层设计，以云原生架构替换老旧系统，降本提效。</p>
+      <ul class="sol-points">
+        <li>微服务架构重构，系统耦合度降低 70%</li>
+        <li>私有云 / 混合云部署，数据主权完全可控</li>
+        <li>与 SAP、Oracle 等主流 ERP 深度集成</li>
+        <li>专属项目经理 + 7×24 运维保障</li>
+      </ul>
+      <span class="sol-arrow">→ 了解详情</span>
     </div>
   </div>
 </section>
@@ -700,32 +918,38 @@
     <div class="section-header fade-up" style="margin-bottom: 0;">
       <div class="section-label">Our Clients</div>
       <h2 class="section-title">服务客户</h2>
-      <p class="section-sub">我们已为金融、零售、电商等多个行业的头部企业提供长期数字化服务支持。</p>
+      <p class="section-sub">深度服务金融、零售、电商等多行业头部企业，累计服务客户突破 800 家，在华东区域拥有超过 65% 的市场占有率。</p>
     </div>
     <div class="timeline fade-up">
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2016</div>
         <div class="timeline-title">公司成立，深耕移动支付赛道</div>
-        <div class="timeline-desc">聚焦聚合支付产品研发，完成首批商户接入，建立技术团队核心骨干。</div>
+        <div class="timeline-desc">聚焦聚合支付产品研发，首批接入 20 家商户，年处理交易额突破 5 亿元，建立技术团队核心骨干。</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2018</div>
-        <div class="timeline-title">获得高新技术企业认证</div>
-        <div class="timeline-desc">研发投入持续加大，获评国家高新技术企业，并通过双软资质认证。</div>
+        <div class="timeline-title">获得高新技术企业认证，融资加速</div>
+        <div class="timeline-desc">获评国家高新技术企业并通过双软资质认证，完成 Pre-A 轮融资，研发团队扩张至 60 人，服务客户突破 100 家。</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2020</div>
-        <div class="timeline-title">服务客户突破300家</div>
-        <div class="timeline-desc">战略客户覆盖苏宁易购、星图金融等知名企业，业务版图扩展至华东全区。</div>
+        <div class="timeline-title">战略合作头部机构，年交易额破百亿</div>
+        <div class="timeline-desc">签约苏宁易购、星图金融、招商银行等头部战略客户，年处理交易额首次突破 100 亿元，业务覆盖华东全区。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2022</div>
+        <div class="timeline-title">AI 风控引擎上线，获评江苏软件百强</div>
+        <div class="timeline-desc">自研 AI 风控模型正式商用，入选江苏省软件和信息技术服务业百强企业，年处理交易额突破 300 亿元。</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2024</div>
-        <div class="timeline-title">全面迈入金融科技新阶段</div>
-        <div class="timeline-desc">AI赋能获客与风控，推出新一代数字化经营平台，服务500+合作伙伴。</div>
+        <div class="timeline-title">全面迈入金融科技新纪元</div>
+        <div class="timeline-desc">发布新一代数字化经营平台，年处理交易额超 500 亿元，服务 800+ 合作伙伴，荣获中国金融科技年度创新大奖。</div>
       </div>
     </div>
   </div>
@@ -737,6 +961,12 @@
     <div class="client-logo">招商银行</div>
     <div class="client-logo">京东金融</div>
     <div class="client-logo">陆金所</div>
+    <div class="client-logo">平安科技</div>
+    <div class="client-logo">蚂蚁集团</div>
+    <div class="client-logo">腾讯金融</div>
+    <div class="client-logo">360 金融</div>
+    <div class="client-logo">新希望金融</div>
+    <div class="client-logo">中信消费金融</div>
   </div>
 </section>
 
@@ -745,7 +975,7 @@
 <!-- CERTS -->
 <section id="certs">
   <div class="section-header fade-up" style="text-align: center;">
-    <div class="section-label">Certifications</div>
+    <div class="section-label">Certifications & Awards</div>
     <h2 class="section-title">资质荣誉</h2>
     <p class="section-sub" style="margin: 0 auto;">国家权威机构认证背书，彰显我们在技术研发与行业规范方面的持续承诺</p>
   </div>
@@ -753,43 +983,43 @@
   <div class="certs-grid stagger">
     <div class="cert-card fade-up" style="--i:0">
       <div class="cert-icon">🏆</div>
-      <h4>高新技术企业</h4>
-      <p>国家科技部认定，彰显自主创新技术实力</p>
+      <h4>国家高新技术企业</h4>
+      <p>科技部、财政部联合认定，彰显自主创新技术实力与研发体系完善度</p>
     </div>
     <div class="cert-card fade-up" style="--i:1">
       <div class="cert-icon">🛡️</div>
-      <h4>支付宝优质服务商</h4>
-      <p>蚂蚁集团授权认证，专业聚合支付服务商</p>
+      <h4>支付宝金牌服务商</h4>
+      <p>蚂蚁集团授权认证，聚合支付领域综合评级 TOP 5% 优质服务商</p>
     </div>
     <div class="cert-card fade-up" style="--i:2">
       <div class="cert-icon">📜</div>
-      <h4>软件企业认证</h4>
-      <p>工业和信息化部认定，国家双软资质企业</p>
+      <h4>国家双软认证企业</h4>
+      <p>工业和信息化部认定软件企业及软件产品，享受国家级税收政策支持</p>
     </div>
     <div class="cert-card fade-up" style="--i:3">
       <div class="cert-icon">🔒</div>
       <h4>ISO 27001 信息安全</h4>
-      <p>国际信息安全管理体系认证，数据安全合规</p>
+      <p>国际信息安全管理体系认证，覆盖数据采集、存储、传输全生命周期</p>
     </div>
     <div class="cert-card fade-up" style="--i:4">
       <div class="cert-icon">⚡</div>
-      <h4>微信支付服务商</h4>
-      <p>腾讯微信支付官方授权服务商资质</p>
+      <h4>微信支付官方服务商</h4>
+      <p>腾讯微信支付官方授权，提供从接入到运营的全程技术支持</p>
     </div>
     <div class="cert-card fade-up" style="--i:5">
       <div class="cert-icon">🌐</div>
-      <h4>互联网增值电信业务</h4>
-      <p>工信部颁发ICP许可证，合规经营资质</p>
+      <h4>ICP 增值电信业务许可</h4>
+      <p>工信部颁发互联网增值电信业务经营许可证，合法合规经营保障</p>
     </div>
     <div class="cert-card fade-up" style="--i:6">
       <div class="cert-icon">📊</div>
-      <h4>国家级科技型中小企业</h4>
-      <p>入选国家科技型中小企业培育名录</p>
+      <h4>国家科技型中小企业</h4>
+      <p>入选科技部国家科技型中小企业培育名录，获省级重点研发项目立项支持</p>
     </div>
     <div class="cert-card fade-up" style="--i:7">
       <div class="cert-icon">🎖️</div>
-      <h4>江苏省软件百强企业</h4>
-      <p>连续入选江苏省软件和信息技术服务业百强</p>
+      <h4>江苏软件百强企业</h4>
+      <p>连续三年入选江苏省软件和信息技术服务业百强，综合实力位列省内前 20</p>
     </div>
   </div>
 </section>
@@ -802,33 +1032,125 @@
     <div class="fade-up">
       <div class="section-label">About Us</div>
       <h2 class="section-title">关于我们</h2>
-      <p style="color: var(--gray-2); font-size: 0.95rem; line-height: 1.9; margin-bottom: 24px; font-weight: 300;">
-        有妖互娱（南京）科技有限公司成立于2016年，总部位于南京，是一家专注于移动支付、数字化经营及金融科技的科技型企业。
+      <p style="color: var(--gray-2); font-size: 0.95rem; line-height: 1.95; margin-bottom: 20px; font-weight: 300;">
+        有妖互娱（南京）科技有限公司成立于 2016 年，总部位于南京，是一家专注于移动支付、数字化经营及金融科技的科技型企业。
+      </p>
+      <p style="color: var(--gray-3); font-size: 0.875rem; line-height: 1.9; font-weight: 300; margin-bottom: 20px;">
+        我们拥有一支由资深技术专家、行业顾问与产品经理组成的精英团队，平均从业经验超过 8 年。研发中心设于南京，并在上海、深圳设有业务拓展团队，业务辐射全国。
       </p>
       <p style="color: var(--gray-3); font-size: 0.875rem; line-height: 1.9; font-weight: 300;">
-        我们拥有一支由资深技术专家与行业顾问组成的精英团队，致力于以前沿技术推动行业数字化升级，为合作伙伴创造持续的商业价值。
+        我们相信，真正优秀的科技公司不仅仅是工具的提供者，更是客户业务增长的长期伙伴。我们与 800+ 家企业建立了深度合作关系，平均合作年限超过 3.5 年，客户续约率高达 92%。
       </p>
+
+      <div class="tech-bars">
+        <div class="tech-bar-item">
+          <div class="tech-bar-header">
+            <span class="tech-bar-label">支付系统研发</span>
+            <span class="tech-bar-pct">96%</span>
+          </div>
+          <div class="tech-bar-track"><div class="tech-bar-fill" data-width="96"></div></div>
+        </div>
+        <div class="tech-bar-item">
+          <div class="tech-bar-header">
+            <span class="tech-bar-label">AI / 大数据能力</span>
+            <span class="tech-bar-pct">88%</span>
+          </div>
+          <div class="tech-bar-track"><div class="tech-bar-fill" data-width="88"></div></div>
+        </div>
+        <div class="tech-bar-item">
+          <div class="tech-bar-header">
+            <span class="tech-bar-label">移动端开发</span>
+            <span class="tech-bar-pct">93%</span>
+          </div>
+          <div class="tech-bar-track"><div class="tech-bar-fill" data-width="93"></div></div>
+        </div>
+        <div class="tech-bar-item">
+          <div class="tech-bar-header">
+            <span class="tech-bar-label">金融合规与风控</span>
+            <span class="tech-bar-pct">91%</span>
+          </div>
+          <div class="tech-bar-track"><div class="tech-bar-fill" data-width="91"></div></div>
+        </div>
+      </div>
     </div>
+
     <div class="about-visual fade-up">
+      <div class="metric-card">
+        <div class="metric-val">92%</div>
+        <div>
+          <div class="metric-info-label">客户续约率</div>
+          <div class="metric-info-sub">平均合作年限超过 3.5 年，深度绑定客户成长</div>
+        </div>
+      </div>
       <div class="metric-card">
         <div class="metric-val">82%</div>
         <div>
           <div class="metric-info-label">本科以上学历</div>
-          <div class="metric-info-sub">高学历团队保障技术研发质量</div>
+          <div class="metric-info-sub">高学历精英团队，保障技术研发深度与质量</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-val">50%</div>
         <div>
-          <div class="metric-info-label">软件技术人员</div>
-          <div class="metric-info-sub">核心工程师团队驱动产品创新</div>
+          <div class="metric-info-label">核心软件工程师</div>
+          <div class="metric-info-sub">技术团队构成主体，持续驱动产品创新迭代</div>
         </div>
       </div>
       <div class="metric-card">
-        <div class="metric-val">500<span style="font-size:1.2rem;color:var(--gray-2)">+</span></div>
+        <div class="metric-val">800<span style="font-size:1.1rem;color:var(--gray-3)">+</span></div>
         <div>
           <div class="metric-info-label">累计服务企业</div>
-          <div class="metric-info-sub">覆盖金融、零售、电商等多行业</div>
+          <div class="metric-info-sub">覆盖金融、零售、电商、制造等核心行业</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-header fade-up" style="text-align:center;">
+    <div class="section-label">Client Voices</div>
+    <h2 class="section-title">客户如何评价我们</h2>
+    <p class="section-sub" style="margin:0 auto;">来自合作伙伴的真实反馈，是我们持续前行的最大动力</p>
+  </div>
+
+  <div class="testi-grid stagger">
+    <div class="testi-card fade-up" style="--i:0">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">有妖科技的聚合支付系统接入极为顺畅，文档清晰、接口稳定。上线后日均交易量翻了三倍，对账效率提升了 80%，再也不需要人工核账了。</p>
+      <div class="testi-author">
+        <div class="testi-avatar">王</div>
+        <div>
+          <div class="testi-name">王 × 总</div>
+          <div class="testi-role">某连锁零售品牌 · CTO</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-up" style="--i:1">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">我们合作了 5 年，每年都在续约。他们的 AI 获客模型帮我们精准触达高意向用户，申请转化率提升了近 50%，不良率同步下降，ROI 非常可观。</p>
+      <div class="testi-author">
+        <div class="testi-avatar">李</div>
+        <div>
+          <div class="testi-name">李 × 总</div>
+          <div class="testi-role">某头部消费金融公司 · 业务总监</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-up" style="--i:2">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">数字化经营平台帮我们把分散在 200 多家门店的会员数据统一起来，真正实现了千人千面的精准营销。活动转化率直接翻倍，复购率提升 35%。</p>
+      <div class="testi-author">
+        <div class="testi-avatar">张</div>
+        <div>
+          <div class="testi-name">张 × 总</div>
+          <div class="testi-role">某全国连锁餐饮品牌 · 数字化负责人</div>
         </div>
       </div>
     </div>
@@ -843,28 +1165,35 @@
     <div class="fade-up">
       <div class="section-label">Contact</div>
       <h2 class="section-title">联系我们</h2>
-      <p style="color:var(--gray-2);font-size:0.9rem;line-height:1.8;margin-bottom:40px;font-weight:300;">
-        如您有合作需求或产品咨询，我们的专业顾问将在24小时内与您取得联系。
+      <p style="color:var(--gray-2);font-size:0.9rem;line-height:1.9;margin-bottom:40px;font-weight:300;">
+        如您有合作需求或产品咨询，我们的专业顾问将在 <strong style="color:var(--white)">4 小时内</strong> 与您取得联系，提供一对一定制化方案。
       </p>
       <div class="contact-item">
         <div class="contact-item-icon">📍</div>
         <div>
           <div class="contact-item-label">公司地址</div>
-          <div class="contact-item-val">江苏省南京市</div>
+          <div class="contact-item-val">江苏省南京市江宁区软件大道 106 号</div>
         </div>
       </div>
       <div class="contact-item">
         <div class="contact-item-icon">📞</div>
         <div>
           <div class="contact-item-label">商务热线</div>
-          <div class="contact-item-val">400-XXX-XXXX</div>
+          <div class="contact-item-val">400-XXX-XXXX（工作日 9:00–18:00）</div>
         </div>
       </div>
       <div class="contact-item">
         <div class="contact-item-icon">✉️</div>
         <div>
-          <div class="contact-item-label">电子邮箱</div>
+          <div class="contact-item-label">商务邮箱</div>
           <div class="contact-item-val">business@youyao-tech.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">💬</div>
+        <div>
+          <div class="contact-item-label">微信公众号</div>
+          <div class="contact-item-val">有妖科技（扫码关注获取最新资讯）</div>
         </div>
       </div>
     </div>
@@ -881,24 +1210,35 @@
             <input type="tel" placeholder="手机号码" required />
           </div>
         </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>公司名称</label>
+            <input type="text" placeholder="您的公司" />
+          </div>
+          <div class="form-group">
+            <label>职位</label>
+            <input type="text" placeholder="您的职位" />
+          </div>
+        </div>
         <div class="form-group">
           <label>需求类型</label>
           <select>
             <option value="">请选择您的需求</option>
             <option>聚合支付系统</option>
-            <option>APP与小程序开发</option>
+            <option>APP 与小程序开发</option>
             <option>商户数字化经营</option>
             <option>金融获客服务</option>
             <option>平台数据优化</option>
             <option>软件定制开发</option>
+            <option>行业解决方案咨询</option>
             <option>其他咨询</option>
           </select>
         </div>
         <div class="form-group">
           <label>需求描述</label>
-          <textarea placeholder="请简要描述您的业务需求，我们将为您量身制定解决方案…"></textarea>
+          <textarea placeholder="请简要描述您的业务背景与核心痛点，我们将为您量身定制解决方案…"></textarea>
         </div>
-        <button type="submit" class="form-submit">提交需求 →</button>
+        <button type="submit" class="form-submit">提交需求，4小时内响应 →</button>
       </form>
     </div>
   </div>
@@ -912,15 +1252,25 @@
         <div class="footer-logo-mark">有妖</div>
         <div class="footer-logo-text">有妖互娱<span>·</span>科技</div>
       </div>
-      <p>有妖互娱（南京）科技有限公司，专注数字化与金融科技，以技术驱动行业创新，助力企业持续增长。</p>
+      <p>有妖互娱（南京）科技有限公司，专注数字化与金融科技，以技术驱动行业创新，助力 800+ 家企业实现持续商业增长。</p>
     </div>
     <div class="footer-links">
       <h5>产品服务</h5>
       <ul>
         <li><a href="#services">聚合支付</a></li>
-        <li><a href="#services">APP开发</a></li>
+        <li><a href="#services">APP 开发</a></li>
         <li><a href="#services">数字化经营</a></li>
         <li><a href="#services">金融获客</a></li>
+        <li><a href="#services">AI 风控</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h5>解决方案</h5>
+      <ul>
+        <li><a href="#solutions">零售与新消费</a></li>
+        <li><a href="#solutions">金融科技</a></li>
+        <li><a href="#solutions">SaaS 平台</a></li>
+        <li><a href="#solutions">企业数字化</a></li>
       </ul>
     </div>
     <div class="footer-links">
@@ -938,41 +1288,146 @@
         <li><a href="#">隐私政策</a></li>
         <li><a href="#">服务协议</a></li>
         <li><a href="#">安全中心</a></li>
+        <li><a href="#">合规声明</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2024 有妖互娱（南京）科技有限公司 · 保留所有权利</span>
-    <span><a href="#">苏ICP备XXXXXXXX号</a></span>
+    <span><a href="#">苏ICP备XXXXXXXX号</a> &nbsp;·&nbsp; <a href="#">增值电信业务经营许可证</a></span>
   </div>
 </footer>
 
 <script>
-  // Nav scroll effect
-  const navbar = document.getElementById('navbar');
+  // ─── SCROLL PROGRESS ───
+  const progressBar = document.getElementById('scroll-progress');
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    progressBar.style.width = pct + '%';
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  // Intersection Observer for fade-up animations
+  // ─── CANVAS PARTICLES ───
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function createParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      alpha: Math.random() * 0.5 + 0.1,
+      color: Math.random() > 0.6 ? '#2e6af6' : Math.random() > 0.5 ? '#c9a84c' : '#ffffff'
+    };
+  }
+
+  for (let i = 0; i < 120; i++) particles.push(createParticle());
+
+  let mouseX = -9999, mouseY = -9999;
+  window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      // mouse repel
+      const dx = p.x - mouseX, dy = p.y - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) { p.vx += dx / dist * 0.15; p.vy += dy / dist * 0.15; }
+      p.vx *= 0.98; p.vy *= 0.98;
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
+      ctx.fill();
+    });
+    // draw connecting lines
+    ctx.globalAlpha = 1;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 90) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(46,106,246,' + (0.06 * (1 - d / 90)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // ─── FADE UP OBSERVER ───
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
         observer.unobserve(entry.target);
+        // trigger tech bars
+        entry.target.querySelectorAll('.tech-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  document.querySelectorAll('.fade-up').forEach((el, i) => {
-    observer.observe(el);
+  // ─── COUNTER ANIMATION ───
+  function animateCount(el) {
+    const target = parseInt(el.dataset.target);
+    const duration = 1800;
+    const step = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = Math.floor(current);
+    }, 16);
+  }
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCount(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.count').forEach(el => counterObserver.observe(el));
+
+  // ─── SERVICE CARD MOUSE GLOW ───
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
   });
 
-  // Form submit
+  // ─── FORM SUBMIT ───
   function handleSubmit(e) {
     e.preventDefault();
     const btn = e.target.querySelector('.form-submit');
-    btn.textContent = '✓ 提交成功，我们将尽快联系您';
+    btn.textContent = '✓ 提交成功！我们将在 4 小时内与您联系';
     btn.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
     btn.style.boxShadow = '0 8px 32px rgba(5,150,105,0.4)';
     btn.disabled = true;
